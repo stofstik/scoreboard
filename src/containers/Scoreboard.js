@@ -11,7 +11,6 @@ export class Scoreboard extends Component {
     return (
       <Player
         key={ index }
-        rank={ index }
         { ...player } />
     )
   }
@@ -21,8 +20,8 @@ export class Scoreboard extends Component {
 
     return (
       <div className="scoreboard">
-        <Title label="Scoreboard" />
         <CreatePlayer />
+        <Title label="Neebs:" />
         <ul>
           { players.map(this.renderPlayer.bind(this)) }
         </ul>

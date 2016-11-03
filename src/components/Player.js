@@ -2,13 +2,14 @@ import React, { Component } from 'react'
 import { connect } from 'react-redux'
 import { Link } from 'react-router'
 import plusOne from '../actions/plus-one'
+import recalcPodium from '../actions/recalc-podium'
 import deletePlayer from '../actions/delete-player'
 import Trophy from './Trophy'
 import './Player.sass'
 
 export class Player extends Component {
   plusOne() {
-    const { playerId, plusOne } = this.props
+    const { playerId, plusOne, recalcPodium } = this.props
     plusOne(playerId)
   }
 
@@ -18,7 +19,8 @@ export class Player extends Component {
   }
 
   render() {
-    const { playerId, name, avatar, points, rank } = this.props
+    const { playerId, name, avatar, points, rank, hasTrophy } = this.props
+    console.log(this.props)
 
     return (
       <li className="player">
@@ -26,7 +28,7 @@ export class Player extends Component {
           <img src={ avatar } />
         </div>
         <div className="label">
-          <Trophy points={ points } rank={ rank } />
+          { hasTrophy ? <Trophy rank={ rank }/> : null}
           <span className="score">{ points }</span>
           .&nbsp;
           <Link className="name" to={ `/players/${playerId}` }>{ name }</Link>

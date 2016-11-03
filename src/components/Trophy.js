@@ -10,12 +10,9 @@ class Trophy extends Component {
   }
 
   render() {
-    const { points, rank } = this.props
+    const { rank } = this.props
 
-    if (points >= 10 && rank < 3) {
-      return <span className={ `trophy ${this.rankName()}` }>♚</span>
-    }
-    return <span></span>
+    return <span className={ `trophy ${this.rankName()}` }>♚</span>
   }
 }
 
