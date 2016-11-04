@@ -1,12 +1,21 @@
 import React, { Component } from 'react'
 import { connect } from 'react-redux'
-import selectPlayer from '../actions/select-player-profile'
+import appLoading from '../actions/loading'
+import updatePlayer from '../actions/update-player'
 import Title from '../components/Title'
+import api from '../middleware/api'
 
 export class PlayerProfile extends Component {
   componentDidMount() {
-    const { selectPlayer, routeParams } = this.props
-    selectPlayer(routeParams.playerId)
+    const { routeParams, appLoading, updatePlayer } = this.props
+
+    appLoading(true)
+
+    api.get('players/' +  routeParams.playerId )
+      .then((player) => {
+        updatePlayer(player)
+        appLoading(false)
+      })
   }
 
   render() {
@@ -31,11 +40,8 @@ export class PlayerProfile extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    player: state.players.reduce((prev, next) => {
-        return (next.playerId === state.playerProfileId) ?
-          next : prev
-      }, null)
+    player: state.player
   }
 }
 
-export default connect(mapStateToProps, { selectPlayer })(PlayerProfile)
+export default connect(mapStateToProps, { appLoading, updatePlayer })(PlayerProfile)

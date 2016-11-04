@@ -1,3 +1,10 @@
+import { UPDATE_PLAYER } from '../actions/update-player'
+
 export default (state = {}, { type, payload } = {}) => {
-  return state
+  switch(type) {
+    case UPDATE_PLAYER :
+      return payload
+    default :
+      return state
+  }
 }

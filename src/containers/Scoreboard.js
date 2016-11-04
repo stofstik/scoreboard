@@ -10,12 +10,10 @@ import api from '../middleware/api'
 import './Scoreboard.sass'
 
 export class Scoreboard extends Component {
-  componentWillMount() {
-    this.props.appLoading(true)
-  }
-
   componentDidMount() {
     const { appLoading, updatePlayers } = this.props
+
+    appLoading(true)
 
     api.get('players')
       .then((players) => {
