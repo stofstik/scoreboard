@@ -1,9 +1,13 @@
+import { UPDATE_PLAYERS } from '../actions/update-players'
 import { ADD_PLAYER } from '../actions/add-player'
 import { DELETE_PLAYER } from '../actions/delete-player'
 import { PLUS_ONE } from '../actions/plus-one'
 
 export default (state = [], { type, payload } = {}) => {
   switch (type) {
+    case UPDATE_PLAYERS :
+      return payload
+
     case PLUS_ONE :
       return sortPlayers(state.map((player) => {
         if (player.playerId === payload) {

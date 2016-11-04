@@ -1,16 +1,25 @@
 // src/App.js
 
 import React from 'react'
+import { connect } from 'react-redux'
+import Loader from './components/Loader'
 import './App.sass'
 
-class App extends React.Component {
+export class App extends React.Component {
   render() {
     return (
       <div className="app">
         { this.props.children }
+        { this.props.loading ? <Loader /> : null }
       </div>
     )
   }
 }
 
-export default App
+const mapStateToProps = (state) => {
+  return {
+    loading: state.loading,
+  }
+}
+
+export default connect(mapStateToProps)(App)

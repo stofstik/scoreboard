@@ -3,7 +3,7 @@ import React from 'react'
 import wrapper from '../test/wrapper'
 import chai, { expect } from 'chai'
 import chaiEnzyme from 'chai-enzyme'
-import App from './App'
+import { App } from './App'
 
 chai.use(chaiEnzyme())
 

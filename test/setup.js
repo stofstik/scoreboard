@@ -1,6 +1,7 @@
 require('babel-register')();
 require('ignore-styles').default(['.sass', '.scss']);
 require('./linter');
+var chai = require('chai')
 
 var jsdom = require('jsdom').jsdom;
 
@@ -24,6 +25,13 @@ Object.keys(document.defaultView).forEach((property) => {
 global.navigator = {
   userAgent: 'node.js'
 };
+
+global.fetch = function() {
+  var promise = new Promise(function(resolve, reject) {
+    return chai.spy()
+  })
+  return promise
+}
 
 try {
   require('react-tap-event-plugin')();

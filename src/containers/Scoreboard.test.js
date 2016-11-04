@@ -4,10 +4,12 @@ import React from 'react'
 import wrapper from '../../test/wrapper'
 import chai, { expect } from 'chai'
 import chaiEnzyme from 'chai-enzyme'
+import spies from 'chai-spies'
 import { Scoreboard } from './Scoreboard'
 import Player from '../components/Player'
 import Title from '../components/Title'
 
+chai.use(spies)
 chai.use(chaiEnzyme())
 
 const players = [
@@ -26,7 +28,8 @@ const players = [
 ]
 
 describe('<Scoreboard />', () => {
-  const scoreboard = wrapper(<Scoreboard players={ players } />)
+  const appLoading = chai.spy()
+  const scoreboard = wrapper(<Scoreboard players={ players } appLoading={ appLoading } />)
 
   it('is wrapped in a div tag', () => {
     expect(scoreboard).to.have.tagName('div')
@@ -42,5 +45,9 @@ describe('<Scoreboard />', () => {
 
   it('renders the players', () => {
     expect(scoreboard).to.have.exactly(2).descendants(Player)
+  })
+
+  it('calls appLoading twice', () => {
+    expect(appLoading).to.have.been.called.with(true)
   })
 })

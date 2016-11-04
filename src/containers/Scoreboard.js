@@ -4,15 +4,28 @@ import { connect } from 'react-redux'
 import Title from '../components/Title'
 import CreatePlayer from '../components/CreatePlayer'
 import Player from '../components/Player'
+import appLoading from '../actions/loading'
+import updatePlayers from '../actions/update-players'
+import api from '../middleware/api'
 import './Scoreboard.sass'
 
 export class Scoreboard extends Component {
+  componentWillMount() {
+    this.props.appLoading(true)
+  }
+
+  componentDidMount() {
+    const { appLoading, updatePlayers } = this.props
+
+    api.get('players')
+      .then((players) => {
+        updatePlayers(players)
+        appLoading(false)
+      })
+  }
+
   renderPlayer(player, index) {
-    return (
-      <Player
-        key={ index }
-        { ...player } />
-    )
+    return <Player key={ index } rank={ index } { ...player } />
   }
 
   render() {
@@ -20,6 +33,7 @@ export class Scoreboard extends Component {
 
     return (
       <div className="scoreboard">
+        <Title label="Scoreboard" />
         <CreatePlayer />
         <Title label="Neebs:" />
         <ul>
@@ -36,4 +50,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, {})(Scoreboard)
+export default connect(mapStateToProps, { appLoading, updatePlayers })(Scoreboard)
