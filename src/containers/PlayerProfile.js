@@ -49,4 +49,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, { selectPlayer })(PlayerProfile)
+export default connect(mapStateToProps, { appLoading, updatePlayer })(PlayerProfile)
