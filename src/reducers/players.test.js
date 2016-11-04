@@ -21,30 +21,25 @@ describe('players', () => {
     const existingPlayer = {
       playerId: 3,
       name: 'Jane',
-      points: 4,
-      hasTrophy: false,
-      rank: 3,
-      rankedAt: -1,
+      points: 4
     }
     const initialState = deepFreeze([ existingPlayer ])
-    const newPlayerName = 'Bram'
+    const newPlayer = {
+      playerId: 4,
+      name: 'Bram',
+      avatar: 'https://api.adorable.io/avatars/285/bram.png',
+      points: 0
+    }
+
     const action = deepFreeze({
       type: ADD_PLAYER,
-      payload: newPlayerName
+      payload: newPlayer
     })
     const finalState = [
       existingPlayer,
-      {
-        playerId: 4,
-        name: newPlayerName,
-        avatar: `https://api.adorable.io/avatars/285/${newPlayerName}.png`,
-        points: 0,
-        hasTrophy: false,
-        rank: 3,
-        rankedAt: -1,
-
-      }
+      newPlayer
     ]
+
     it('adds a player', () => {
       expect(players(initialState, action)).to.eql(finalState)
     })

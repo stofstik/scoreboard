@@ -6,4 +6,3 @@ export default (player) => {
     payload: player
   }
 }
-

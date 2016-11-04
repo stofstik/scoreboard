@@ -28,8 +28,8 @@ const players = [
 ]
 
 describe('<Scoreboard />', () => {
-  const appLoading = chai.spy()
-  const scoreboard = wrapper(<Scoreboard players={ players } appLoading={ appLoading } />)
+  const updatePlayers = chai.spy()
+  const scoreboard = wrapper(<Scoreboard players={ players } updatePlayers={ updatePlayers } />)
 
   it('is wrapped in a div tag', () => {
     expect(scoreboard).to.have.tagName('div')
@@ -47,7 +47,7 @@ describe('<Scoreboard />', () => {
     expect(scoreboard).to.have.exactly(2).descendants(Player)
   })
 
-  it('calls appLoading twice', () => {
-    expect(appLoading).to.have.been.called.with(true)
+  it('calls updatePlayers', () => {
+    expect(updatePlayers).to.have.been.called()
   })
 })

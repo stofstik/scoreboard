@@ -37,6 +37,7 @@ describe('<CreatePlayer />', () => {
     it('calls the save function when we submit it', () => {
       form.simulate('submit')
       expect(addPlayer).to.have.been.called()
+      expect(form.ref('name').get(0).value).to.eq('')
     })
   })
 })

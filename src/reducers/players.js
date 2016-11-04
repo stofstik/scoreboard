@@ -18,14 +18,7 @@ export default (state = [], { type, payload } = {}) => {
       }))
 
     case ADD_PLAYER :
-      const newPlayer = {
-        playerId: nextPlayerId(state),
-        name: payload.name,
-        avatar: `https://api.adorable.io/avatars/285/${payload}.png`,
-        points: 0,
-        rankedAt: -1
-      }
-      return sortPlayers(state.concat([ newPlayer ]))
+      return sortPlayers(state.concat([ payload ]))
 
     case DELETE_PLAYER :
       return sortPlayers(state.filter((player) => {
@@ -45,51 +38,7 @@ export const nextPlayerId = (players) => {
 }
 
 export const sortPlayers = (players) => {
-  // Get all points and squish them down to unique values
-  // Thank you google...
-  const uniquePoints = [...new Set(players.map((p) => p.points))].sort((p, n) => n - p)
-  console.log(uniquePoints)
-  // Get points per rank otherwise return 0
-  const pointsFirst  = uniquePoints[0] ? uniquePoints[0] : 0
-  const pointsSecond = uniquePoints[1] ? uniquePoints[1] : 0
-  const pointsThird  = uniquePoints[2] ? uniquePoints[2] : 0
-  console.log('1 %s, 2 %s, 3 %s', pointsFirst, pointsSecond, pointsThird)
-
-  // Oh noes mutable shiiiiiii
-  var gold = 0
-  var silver = 0
-  var bronze = 0
-
-  // Give trophies yay!
-  // const trophiesBeenGivenYall = players.map((p, index) => {
-  return players.map((p, index) => {
-    if(p.points >= 10) {
-        switch (p.points){
-          case pointsFirst:
-            if (gold < 3){
-              gold += 1
-              console.log(gold)
-              return Object.assign({}, p, { hasTrophy: true, rank: 0, rankedAt: new Date().getTime() })
-            }
-          case pointsSecond:
-            if (silver < 3){
-              silver += 1
-              console.log(silver)
-              return Object.assign({}, p, { hasTrophy: true, rank: 1, rankedAt: new Date().getTime() })
-            }
-          case pointsThird:
-            if (bronze < 3){
-              bronze += 1
-              console.log(bronze)
-              return Object.assign({}, p, { hasTrophy: true, rank: 2, rankedAt: new Date().getTime() })
-            }
-          default:
-            return Object.assign({}, p, { hasTrophy: false, rank: index + 2 })
-        }
-    } else {
-      return Object.assign({}, p, { hasTrophy: false, rank: index + 2 })
-    }
-  }).concat().sort((prev, next) => {
-    return prev.rank - next.rank
+  return players.concat().sort((prev, next) => {
+    return next.points - prev.points
   })
 }

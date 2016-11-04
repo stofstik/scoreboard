@@ -59,7 +59,7 @@ class Api {
     return fetch(url, {
       method: 'DELETE',
       headers: this.defaultHeaders(),
-    }).then((response) => response.json())
+    })
   }
 
   url(path = '/') {
