@@ -8,8 +8,8 @@ import './Player.sass'
 
 export class Player extends Component {
   plusOne() {
-    const { playerId, plusOne } = this.props
-    plusOne(playerId)
+    const { playerId, points, plusOne } = this.props
+    plusOne(playerId, points)
   }
 
   deleteMe() {
