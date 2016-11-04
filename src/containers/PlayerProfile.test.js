@@ -19,7 +19,7 @@ const profileProps = {
 describe('<PlayerProfile />', () => {
   const profile = shallow(<PlayerProfile { ...profileProps } />)
 
-  it('called the selectPlayer action', () => {
+  it('called the  action', () => {
     const profile = mount(<PlayerProfile { ...profileProps } />)
     const { selectPlayer } = profileProps
     expect(selectPlayer).to.have.been.called.with(1)

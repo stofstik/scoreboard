@@ -20,7 +20,6 @@ export class Player extends Component {
 
   render() {
     const { playerId, name, avatar, points, rank, hasTrophy } = this.props
-    console.log(this.props)
 
     return (
       <li className="player">

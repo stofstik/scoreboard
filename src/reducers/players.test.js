@@ -21,7 +21,10 @@ describe('players', () => {
     const existingPlayer = {
       playerId: 3,
       name: 'Jane',
-      points: 4
+      points: 4,
+      hasTrophy: false,
+      rank: 3,
+      rankedAt: -1,
     }
     const initialState = deepFreeze([ existingPlayer ])
     const newPlayerName = 'Bram'
@@ -35,10 +38,13 @@ describe('players', () => {
         playerId: 4,
         name: newPlayerName,
         avatar: `https://api.adorable.io/avatars/285/${newPlayerName}.png`,
-        points: 0
+        points: 0,
+        hasTrophy: false,
+        rank: 3,
+        rankedAt: -1,
+
       }
     ]
-
     it('adds a player', () => {
       expect(players(initialState, action)).to.eql(finalState)
     })
@@ -57,8 +63,8 @@ describe('players', () => {
     })
 
     const finalState = [
-      { playerId: 3 },
-      { playerId: 1 },
+      { playerId: 3, hasTrophy: false, rank: 3 },
+      { playerId: 1, hasTrophy: false, rank: 3 },
     ]
 
     it('deletes the player', () => {
@@ -79,9 +85,9 @@ describe('players', () => {
     })
 
     const finalState = [
-      { playerId: 9, points: 1 },
-      { playerId: 3, points: 0 },
-      { playerId: 1, points: 0 },
+      { playerId: 9, points: 1, hasTrophy: false, rank: 3 },
+      { playerId: 3, points: 0, hasTrophy: false, rank: 3 },
+      { playerId: 1, points: 0, hasTrophy: false, rank: 3 },
     ]
 
     it('gives the player an extra point', () => {
@@ -106,17 +112,17 @@ describe('nextPlayerId(players)', () => {
 
 describe('sortPlayers(players)', () => {
   const initialPlayers = deepFreeze([
-    { points: 3 },
-    { points: 9 },
-    { points: 1 },
+    { points: 3, hasTrophy: false, rank: 3 },
+    { points: 9, hasTrophy: false, rank: 3 },
+    { points: 1, hasTrophy: false, rank: 3 },
   ])
 
   const result = sortPlayers(initialPlayers)
 
   const sortedPlayers = [
-    { points: 9 },
-    { points: 3 },
-    { points: 1 },
+    { points: 9, hasTrophy: false, rank: 3 },
+    { points: 3, hasTrophy: false, rank: 3 },
+    { points: 1, hasTrophy: false, rank: 3 },
   ]
 
   it('returns players sorted by their points, desc', () => {

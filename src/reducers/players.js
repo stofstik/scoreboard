@@ -20,7 +20,7 @@ export default (state = [], { type, payload } = {}) => {
     case ADD_PLAYER :
       const newPlayer = {
         playerId: nextPlayerId(state),
-        name: payload,
+        name: payload.name,
         avatar: `https://api.adorable.io/avatars/285/${payload}.png`,
         points: 0,
         rankedAt: -1
@@ -45,60 +45,51 @@ export const nextPlayerId = (players) => {
 }
 
 export const sortPlayers = (players) => {
-  /*
-   * Get the points per rank
-   */
-  const pointsFirst = players.reduce((p, n) => {
-    return (p > n.points) ? p : n.points
-  }, 0)
-  const pointsSecond = players.reduce((p, n) => {
-    return (p > n.points && p !== pointsFirst) ? p : n.points
-  }, 0)
-  const pointsThird = players.reduce((p, n) => {
-    return (p > n.points && p !== pointsFirst && p !== pointsSecond) ? p : n.points
-  }, 0)
+  // Get all points and squish them down to unique values
+  // Thank you google...
+  const uniquePoints = [...new Set(players.map((p) => p.points))].sort((p, n) => n - p)
+  console.log(uniquePoints)
+  // Get points per rank otherwise return 0
+  const pointsFirst  = uniquePoints[0] ? uniquePoints[0] : 0
+  const pointsSecond = uniquePoints[1] ? uniquePoints[1] : 0
+  const pointsThird  = uniquePoints[2] ? uniquePoints[2] : 0
   console.log('1 %s, 2 %s, 3 %s', pointsFirst, pointsSecond, pointsThird)
 
-  /*
-   * Keep track of amount of trophies given
-   */
-  const gold   = []
-  const silver = []
-  const bronze = []
+  // Oh noes mutable shiiiiiii
+  var gold = 0
+  var silver = 0
+  var bronze = 0
 
   // Give trophies yay!
-  return players.map((p) => {
-    // Only give a trophy above 9 points
+  // const trophiesBeenGivenYall = players.map((p, index) => {
+  return players.map((p, index) => {
     if(p.points >= 10) {
-      // Check the rank and give a trophy accordingly
-      switch (p.points){
-        case pointsFirst:
-          // Check if there are still trophies to be handed out
-          if(gold.length <= 3){
-            gold.concat([p.playerId])
-            return Object.assign({}, p, { hasTrophy: true, rank: 0, rankedAt: new Date().getTime() })
-          } else {
-            return Object.assign({}, p, { hasTrophy: false, rank: 0 })
-          }
-        case pointsSecond:
-          if(silver.length <= 3){
-            silver.concat([p.playerId])
-            return Object.assign({}, p, { hasTrophy: true, rank: 1, rankedAt: new Date().getTime() })
-          } else {
-            return Object.assign({}, p, { hasTrophy: false, rank: 1 })
-          }
-        case pointsThird:
-          if(bronze.length <= 3){
-            bronze.concat([p.playerId])
-            return Object.assign({}, p, { hasTrophy: true, rank: 2, rankedAt: new Date().getTime() })
-          } else {
-            return Object.assign({}, p, { hasTrophy: false, rank: 2 })
-          }
-      }
+        switch (p.points){
+          case pointsFirst:
+            if (gold < 3){
+              gold += 1
+              console.log(gold)
+              return Object.assign({}, p, { hasTrophy: true, rank: 0, rankedAt: new Date().getTime() })
+            }
+          case pointsSecond:
+            if (silver < 3){
+              silver += 1
+              console.log(silver)
+              return Object.assign({}, p, { hasTrophy: true, rank: 1, rankedAt: new Date().getTime() })
+            }
+          case pointsThird:
+            if (bronze < 3){
+              bronze += 1
+              console.log(bronze)
+              return Object.assign({}, p, { hasTrophy: true, rank: 2, rankedAt: new Date().getTime() })
+            }
+          default:
+            return Object.assign({}, p, { hasTrophy: false, rank: index + 2 })
+        }
     } else {
-      return Object.assign({}, p, { hasTrophy: false, rank: 3 })
+      return Object.assign({}, p, { hasTrophy: false, rank: index + 2 })
     }
   }).concat().sort((prev, next) => {
-    return next.points - prev.points
+    return prev.rank - next.rank
   })
 }

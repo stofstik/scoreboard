@@ -8,6 +8,7 @@ import api from '../middleware/api'
 export class PlayerProfile extends Component {
   componentDidMount() {
     const { routeParams, appLoading, updatePlayer } = this.props
+    console.log(this.props)
 
     appLoading(true)
 
@@ -21,6 +22,7 @@ export class PlayerProfile extends Component {
   render() {
     if (this.props.player) {
       const { name } = this.props.player
+      console.log(name)
 
       return (
         <div className="player-profile">
