@@ -56,16 +56,15 @@ export const sortPlayers = (players) => {
   console.log('1 %s, 2 %s, 3 %s', pointsFirst, pointsSecond, pointsThird)
 
   // Podium
-  var gold = []
-  var silver = []
-  var bronze = []
-  var losers = []
-  var neebs = []
+  const gold = []
+  const silver = []
+  const bronze = []
+  const losers = []
+  const neebs = []
 
   // Give trophies yay!
-  function giveTrophies(){
-    players.map((p, index) => {
-      if(p.points >= 10) {
+  const trophiesGiven = players.map((p, index) => {
+    if(p.points >= 10) {
         switch (p.points){
           case pointsFirst:
             if (gold.length < 3){
@@ -80,12 +79,12 @@ export const sortPlayers = (players) => {
               bronze.concat([Object.assign({}, p, { hasTrophy: true, rank: 2, rankedAt: new Date().getTime() })])
             }
           default:
-            losers.concat([Object.assign({}, p, { hasTrophy: false, rank: index + 2 })])
+            losers.concat(Object.assign({}, p, { hasTrophy: false, rank: index + 2 }))
         }
-      } else {
-        neebs.concat([Object.assign({}, p, { hasTrophy: false, rank: index + 2 })])
-      }
-    })
-  }
-  return gold.concat(silver).concat(bronze).concat(losers).concat(neebs)
+    } else {
+      losers.concat(Object.assign({}, p, { hasTrophy: false, rank: index + 2 }))
+    }
+  }).concat().sort((prev, next) => {
+    return prev.rank - next.rank
+  })
 }
